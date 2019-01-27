@@ -26,11 +26,9 @@ const updateUser = ({ id, firstName, lastName, email, password }) =>
   },{
     where: { id },
     returning: true
-    }).then(user => 
-      user
-      ).catch(err => {
-        logger.error(`💥 Failed to update user : ${err.stack}`);
-});
+    }).then(user => user
+      ? omit (user, Users.excludeAttributes)
+     : Promise.reject(new Error('UNKOWN OR DELETED USER')));
   
 
   
