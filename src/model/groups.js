@@ -1,5 +1,3 @@
-const bcrypt = require('bcrypt'); // https://github.com/kelektiv/node.bcrypt.js
-const users = require('./users.js');
 
 module.exports = (sequelize, DataTypes) => {
   const Groups = sequelize.define(

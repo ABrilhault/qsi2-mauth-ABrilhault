@@ -125,10 +125,11 @@ apiUsersProtected.put('/', (req, res) =>
 
 apiUsersProtected.delete('/', (req, res) =>
  deleteUser(req.user)
-    .then(user => res.status(200).send({
+    .then(
+      res.status(200).send({
         success: true,
-        message: 'user deleted'
-      }))
+        message: 'user deleted'})
+    )
 );
 
 

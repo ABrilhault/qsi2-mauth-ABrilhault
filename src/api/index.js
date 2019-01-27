@@ -1,5 +1,6 @@
 const express = require('express');
 const { apiUsers, apiUsersProtected } = require('./users');
+const { apiGroups } = require('./groups');
 const { isAuthenticated, initAuth } = require('../controller/auth');
 // create an express Application for our api
 const api = express();
@@ -19,6 +20,7 @@ apiRoutes
   // api bellow this middelware require Authorization
   .use(isAuthenticated)
   .use('/users', apiUsersProtected)
+  .use('/groups', apiGroups)
   .use((err, req, res, next) => {
     res.status(403).send({
       success: false,

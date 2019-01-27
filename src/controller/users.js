@@ -31,7 +31,7 @@ const updateUser = ({ id, firstName, lastName, email, password }) =>
      : Promise.reject(new Error('UNKOWN OR DELETED USER')));
   
 
-const deleteUser = ({ id, firstName, lastName, email, password }) =>
+const deleteUser = ({ id }) =>
   Users.update({
     deletedAt : new Date()
   },{

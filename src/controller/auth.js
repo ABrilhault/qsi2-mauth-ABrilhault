@@ -1,5 +1,6 @@
 const { ExtractJwt, Strategy } = require('passport-jwt');
 const passport = require('passport');
+const logger = require('../logger');
 
 const { getUser } = require('./users');
 
@@ -36,6 +37,7 @@ const isAuthenticated = (req, res, next) =>
       return next(new Error('UNAUTHORIZED USER'));
     }
     req.user = user;
+    logger.info(`user auth : ${user.id}`);
     return next();
   })(req, res, next);
 
