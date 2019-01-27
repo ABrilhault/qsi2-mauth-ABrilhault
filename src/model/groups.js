@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
   );
 
   Groups.associate = models => {
-    Groups.belongsToMany(models.Users, { through: 'Member' });
+    Groups.belongsToMany(models.Users, { through: 'Members' });
   };
 
   return Groups;

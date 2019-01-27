@@ -12,6 +12,32 @@ const createGroup = ({title, description, metadatas}, id) =>
         group
 );
 
+
+const addMember = ({email, groupId}, id) =>
+    Groups.findOne({
+        where: {
+           id: groupId 
+        }
+    }).then(group => {
+        logger.info(`idGroup : ${groupId}`);
+        logger.info(`id : ${id}`);
+        if(group.owner_id != id) {
+            return reject(new Error('UNAUTHORIZED OPERATION : User is not the owner of the group'));
+        }
+        Users.findOne({
+            where: {
+              email
+            }
+          }).then(user => {
+            logger.info(`member id : ${user.id}`);
+            group.addUsers(user);
+        //   }).then(group, user => resolve(`User ${user.id} added to group ${group.title}`))
+    // });
+    })});
+    
+
+
 module.exports = {
-    createGroup
+    createGroup,
+    addMember
 };
