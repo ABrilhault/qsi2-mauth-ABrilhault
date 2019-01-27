@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jwt-simple');
-const { createGroup, addMember } = require('../controller/groups');
+const { createGroup, addMember, findAllGroups } = require('../controller/groups');
 const logger = require('../logger');
 
 const apiGroups = express.Router();
@@ -56,5 +56,27 @@ apiGroups.put('/members', (req, res) =>
           });
         })
 );
+
+
+// 5. As a group member, I want to get a list of all 
+// so that I could list most recent posts
+apiGroups.get('/', (req, res) =>
+    findAllGroups()
+    .then(groups => {
+        logger.info(`groups length : ${groups.length}`)
+        return res.status(200).send({
+            success: true,
+            groups,
+            message: 'List of all groups'});
+        })
+    .catch(err => {
+        logger.error(`💥 Failed to retrieve all groups : ${err.stack}`);
+        return res.status(500).send({
+          success: false,
+          message: `${err.name} : ${err.message}`
+        });
+      })
+);
+
 
 module.exports = { apiGroups };

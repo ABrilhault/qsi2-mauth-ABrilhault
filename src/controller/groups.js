@@ -34,10 +34,16 @@ const addMember = ({email, groupId}, id) =>
         //   }).then(group, user => resolve(`User ${user.id} added to group ${group.title}`))
     // });
     })});
+
     
+const findAllGroups = () => {
+    logger.info(`findAllGroups`);
+    return Groups.findAll().then(groups => groups);
+}
 
 
 module.exports = {
     createGroup,
-    addMember
+    addMember,
+    findAllGroups
 };
