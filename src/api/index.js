@@ -1,5 +1,5 @@
 const hpp = require('hpp');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const helmet = require ('helmet');
 const express = require('express');
 const { apiUsers, apiUsersProtected } = require('./users');
@@ -7,7 +7,7 @@ const { apiGroups } = require('./groups');
 const { isAuthenticated, initAuth } = require('../controller/auth');
 // create an express Application for our api
 const api = express();
-api.use(bodyParser.urlencoded()); 
+// api.use(bodyParser.urlencoded()); 
 api.use(hpp());
 api.use(helmet());
 

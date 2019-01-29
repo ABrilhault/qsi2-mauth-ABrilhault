@@ -38,7 +38,8 @@ const addMember = ({email, groupId}, id) =>
     
 const findAllGroups = () => {
     logger.info(`findAllGroups`);
-    return Groups.findAll().then(groups => groups);
+    // return Groups.findAll().then(groups => groups);
+    return Groups.findAll().then(groups => groups.map( group => group.get({plain : true})));
 }
 
 
