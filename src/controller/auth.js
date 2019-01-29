@@ -37,7 +37,7 @@ const isAuthenticated = (req, res, next) =>
       return next(new Error('UNAUTHORIZED USER'));
     }
     req.user = user;
-    logger.info(`user auth : ${user.id}`);
+    logger.debug(`user auth : ${user.id}`);
     return next();
   })(req, res, next);
 

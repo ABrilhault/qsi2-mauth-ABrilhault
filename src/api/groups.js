@@ -15,7 +15,7 @@ apiGroups.post('/', (req, res) =>
       })
     : createGroup(req.body, req.user.id)
         .then(group => {
-            logger.info(`api group.id: ${group.id}`)
+            logger.debug(`api group.id: ${group.id}`)
             const tokeng = jwt.encode({ id: group.id }, process.env.JWT_SECRET);
             return res.status(200).send({
             success: true,
@@ -63,7 +63,7 @@ apiGroups.put('/members', (req, res) =>
 apiGroups.get('/', (req, res) =>
     findAllGroups()
     .then(groups => {
-        logger.info(`groups length : ${groups.length}`)
+        logger.debug(`groups length : ${groups.length}`)
         return res.status(200).send({
             success: true,
             groups,

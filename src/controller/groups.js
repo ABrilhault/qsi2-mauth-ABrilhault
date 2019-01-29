@@ -13,31 +13,52 @@ const createGroup = ({title, description, metadatas}, id) =>
 );
 
 
-const addMember = ({email, groupId}, id) =>
-    Groups.findOne({
-        where: {
-           id: groupId 
-        }
-    }).then(group => {
-        logger.info(`idGroup : ${groupId}`);
-        logger.info(`id : ${id}`);
-        if(group.owner_id != id) {
-            return reject(new Error('UNAUTHORIZED OPERATION : User is not the owner of the group'));
-        }
+const addMember = ({ email, groupId }, id) =>
+  Groups.findOne({
+    where: {
+      id: groupId
+    }
+  })
+    .then(
+      group =>
+        new Promise((resolve, reject) => {
+          logger.debug(`idGroup : ${groupId}`);
+          logger.debug(`id : ${id}`);
+          if (group.owner_id != id) {
+            return reject(
+              new Error(
+                'UNAUTHORIZED OPERATION : User is not the owner of the group'
+              )
+            );
+          }
+          return resolve(group);
+        })
+    )
+    .then(group =>
+
+    // Avoid to create nested then ... otherwise you replace a callback hell by a promise hell
+
+      Promise.all(
         Users.findOne({
-            where: {
-              email
-            }
-          }).then(user => {
-            logger.info(`member id : ${user.id}`);
-            group.addUsers(user);
-        //   }).then(group, user => resolve(`User ${user.id} added to group ${group.title}`))
-    // });
-    })});
+          where: {
+            email
+          }
+        }),
+        group
+      )
+    )
+    .then((user, group) => {
+      logger.debug(`member id : ${user.id}`);
+      return Promise.all(user, group.addUsers(user));
+    })
+    .then((user, group) => [
+      user.get({ plain: true }),
+      group.get({ plain: true })
+    ]);
 
     
 const findAllGroups = () => {
-    logger.info(`findAllGroups`);
+    logger.debug(`findAllGroups`);
     // return Groups.findAll().then(groups => groups);
     return Groups.findAll().then(groups => groups.map( group => group.get({plain : true})));
 }
